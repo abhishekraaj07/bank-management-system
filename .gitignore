@@ -1,0 +1,14 @@
+# Compiled class files
+bin/
+*.class
+
+# Database runtime file
+bank_database.db
+
+# Other reports
+Library_Management_System_Report.pdf
+
+# IDE folders
+.idea/
+.vscode/
+nbproject/private/
