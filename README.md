@@ -52,7 +52,3 @@ java -cp "bin;lib/sqlite-jdbc.jar;lib/jcalendar-1.4.jar" bank.management.system.
 - **PIN:** `1234`
 - *(Preloaded Opening Balance: ₹10,000)*
 
----
-
-## 📄 Project Documentation
-Full BCA project report is available in `Bank_Management_System_Report.pdf`.
