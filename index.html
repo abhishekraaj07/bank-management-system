@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Management System - ATM Simulator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --accent: #10b981;
+            --dark: #0f172a;
+            --dark-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        body {
+            background-color: var(--dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        header {
+            padding: 30px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .badge {
+            background: rgba(37, 99, 235, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        .hero h1 span {
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto 36px;
+        }
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: var(--dark-card);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover {
+            background: #273549;
+            transform: translateY(-2px);
+        }
+
+        /* Interactive ATM Card Preview */
+        .atm-card-section {
+            padding: 40px 0;
+            display: flex;
+            justify-content: center;
+        }
+        .credit-card {
+            width: 380px;
+            height: 220px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 26px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .chip {
+            width: 48px;
+            height: 36px;
+            background: linear-gradient(135deg, #ffd700, #b8860b);
+            border-radius: 6px;
+        }
+        .card-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.35rem;
+            letter-spacing: 2px;
+            color: #ffffff;
+        }
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .card-holder {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        .holder-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        /* Interactive ATM Simulator */
+        .simulator-section {
+            padding: 60px 0;
+        }
+        .simulator-box {
+            background: var(--dark-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 36px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .simulator-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .simulator-header h3 {
+            font-size: 1.5rem;
+            color: #38bdf8;
+            margin-bottom: 6px;
+        }
+        .screen-display {
+            background: #090d16;
+            border: 2px solid #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+        .screen-display .balance-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+        .screen-display .balance-amount {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .screen-display .status-msg {
+            color: #60a5fa;
+            font-size: 0.85rem;
+            margin-top: 6px;
+        }
+        .atm-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .atm-btn {
+            background: #334155;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+        .atm-btn:hover {
+            background: var(--primary);
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .input-group input {
+            flex: 1;
+            padding: 12px 16px;
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+        }
+        .input-group input:focus {
+            border-color: var(--primary);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .card {
+            background: var(--dark-card);
+            border: 1px solid var(--border);
+            padding: 30px;
+            border-radius: 16px;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #475569;
+        }
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+        }
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                🏧 Bank Management System
+            </div>
+            <div class="badge">BCA Final Year Project</div>
+        </header>
+
+        <section class="hero">
+            <h1>Automated Teller Machine <br><span>Simulator & Banking System</span></h1>
+            <p>A full-featured desktop banking application built with Java Swing, AWT, JDBC, SQLite and MySQL database support.</p>
+            
+            <div class="btn-group">
+                <a href="https://github.com/abhishekishere014-git/bank-management-system" class="btn btn-primary" target="_blank">
+                    ⭐ View on GitHub
+                </a>
+                <a href="Bank_Management_System_Report.pdf" class="btn btn-secondary" target="_blank" download>
+                    📥 Download Project Report (PDF)
+                </a>
+            </div>
+        </section>
+
+        <!-- Credit Card Graphic -->
+        <div class="atm-card-section">
+            <div class="credit-card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="chip"></div>
+                    <span style="font-size: 0.9rem; color: #94a3b8; font-weight: 600;">ATM DEBIT CARD</span>
+                </div>
+                <div class="card-number">5040 9360 1234 5678</div>
+                <div class="card-footer">
+                    <div>
+                        <div class="card-holder">Card Holder</div>
+                        <div class="holder-name">DEMO ACCOUNT</div>
+                    </div>
+                    <div>
+                        <div class="card-holder">PIN</div>
+                        <div class="holder-name">1234</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Web Simulator -->
+        <section class="simulator-section">
+            <div class="simulator-box">
+                <div class="simulator-header">
+                    <h3>⚡ Live Interactive ATM Demo</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Test the core ATM logic right inside your browser!</p>
+                </div>
+                <div class="screen-display">
+                    <div class="balance-text">Available Balance</div>
+                    <div class="balance-amount" id="balance">₹10,000</div>
+                    <div class="status-msg" id="status">Welcome! Enter amount to Deposit or Withdraw.</div>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="amountInput" placeholder="Enter amount in ₹ (e.g. 1000)">
+                </div>
+                <div class="atm-controls" style="margin-top: 14px;">
+                    <button class="atm-btn" onclick="handleDeposit()" style="background: #10b981;">💵 Deposit</button>
+                    <button class="atm-btn" onclick="handleWithdraw()" style="background: #ef4444;">💸 Withdraw</button>
+                    <button class="atm-btn" onclick="quickCash(1000)">⚡ Fast Cash ₹1,000</button>
+                    <button class="atm-btn" onclick="quickCash(5000)">⚡ Fast Cash ₹5,000</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="features">
+            <div class="card">
+                <div class="card-icon">🔐</div>
+                <h3>PIN Authentication</h3>
+                <p>Card number and secure 4-digit PIN verification with option to change PIN anytime.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">💰</div>
+                <h3>Deposit & Withdrawal</h3>
+                <p>Real-time balance checks, instant credit/debit with insufficient balance protection.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📜</div>
+                <h3>Mini Statement</h3>
+                <p>Shows full transaction history with date, transaction type, and running account balance.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">💾</div>
+                <h3>Zero-Config Database</h3>
+                <p>Embedded SQLite support runs on any PC without MySQL installation, plus MySQL support for university submission.</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>Developed for BCA Final Year Project • Java Swing & JDBC • Hosted on GitHub Pages</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentBalance = 10000;
+        const balanceEl = document.getElementById('balance');
+        const statusEl = document.getElementById('status');
+        const amountInput = document.getElementById('amountInput');
+
+        function updateDisplay(msg) {
+            balanceEl.textContent = '₹' + currentBalance.toLocaleString('en-IN');
+            statusEl.textContent = msg;
+            amountInput.value = '';
+        }
+
+        function handleDeposit() {
+            const val = parseFloat(amountInput.value);
+            if (!val || val <= 0) {
+                statusEl.textContent = '⚠️ Please enter a valid deposit amount';
+                return;
+            }
+            currentBalance += val;
+            updateDisplay(`✅ Successfully deposited ₹${val.toLocaleString('en-IN')}`);
+        }
+
+        function handleWithdraw() {
+            const val = parseFloat(amountInput.value);
+            if (!val || val <= 0) {
+                statusEl.textContent = '⚠️ Please enter a valid withdrawal amount';
+                return;
+            }
+            if (val > currentBalance) {
+                statusEl.textContent = '❌ Insufficient Balance!';
+                return;
+            }
+            currentBalance -= val;
+            updateDisplay(`💸 Withdrawn ₹${val.toLocaleString('en-IN')}`);
+        }
+
+        function quickCash(val) {
+            if (val > currentBalance) {
+                statusEl.textContent = '❌ Insufficient Balance!';
+                return;
+            }
+            currentBalance -= val;
+            updateDisplay(`⚡ Fast Cash: Withdrawn ₹${val.toLocaleString('en-IN')}`);
+        }
+    </script>
+</body>
+</html>

@@ -1,6 +1,15 @@
 # Bank Management System (ATM Simulator)
 
+[![GitHub Pages](https://img.shields.io/badge/Live_Demo-GitHub_Pages-blue?style=for-the-badge&logo=github)](https://abhishekishere014-git.github.io/bank-management-system/)
+[![Java](https://img.shields.io/badge/Language-Java-orange?style=for-the-badge&logo=java)](https://www.java.com/)
+[![License](https://img.shields.io/badge/Project-BCA_Final_Year-brightgreen?style=for-the-badge)](#)
+
 A desktop-based **Bank Management System and Automated Teller Machine (ATM) Simulator** application developed for BCA Final Year Project using **Java Swing, AWT, and JDBC**.
+
+🌐 **Live Project Website & Web Demo:**  
+👉 **[https://abhishekishere014-git.github.io/bank-management-system/](https://abhishekishere014-git.github.io/bank-management-system/)**
+
+---
 
 ## 📌 Features
 - **User Authentication:** Login with Card Number and 4-digit PIN.
